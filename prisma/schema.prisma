@@ -16,6 +16,8 @@ datasource db {
 model Restaurant {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
+  description String?
+  url      String?
   isActive  Boolean @default(false)
   orderEndTime DateTime?
   createdAt DateTime @default(now())
