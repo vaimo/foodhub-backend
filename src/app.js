@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const restaurantRoutes = require('./routes/restaurantRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/restaurants', restaurantRoutes);
+
+app.use('/api/users', userRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
