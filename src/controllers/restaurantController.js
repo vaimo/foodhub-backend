@@ -21,8 +21,8 @@ const createRestaurant = async (req, res) => {
         res.status(201).json({ message: 'Restaurant succesvol aangemaakt', restaurant: newRestaurant });
     } catch (error) {
         console.error('Error creating restaurant:', error);
-                if (error.code === 'P2002' || error.message.includes('validation failed')) {
-             return res.status(400).json({ message: 'Validatiefout bij het aanmaken van het restaurant', details: error.meta || error.message });
+        if (error.code === 'P2002' || error.message.includes('validation failed')) {
+            return res.status(400).json({ message: 'Validatiefout bij het aanmaken van het restaurant', details: error.meta || error.message });
         }
         res.status(500).json({ error: 'Er is een fout opgetreden bij het aanmaken van het restaurant' });
     }
@@ -37,6 +37,24 @@ const getAllRestaurants = async (req, res) => {
         res.status(500).json({ error: 'Er is een fout opgetreden bij het ophalen van de restaurants' });
     }
 };
+
+const getRestaurantById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const restaurant = await prisma.restaurant.findUnique({
+            where: { id: String(id) },
+        });
+
+        if (!restaurant) {
+            return res.status(404).json({ error: 'Restaurant niet gevonden' });
+        }
+
+        res.status(200).json(restaurant);
+    } catch (error) {
+        console.error('Error fetching restaurant by ID:', error);
+        res.status(500).json({ error: 'Er is een fout opgetreden bij het ophalen van het restaurant' });
+    }
+}
 
 const updateRestaurant = async (req, res) => {
     try {
@@ -89,6 +107,7 @@ const deleteRestaurant = async (req, res) => {
 module.exports = {
     createRestaurant,
     getAllRestaurants,
+    getRestaurantById,
     updateRestaurant,
     deleteRestaurant,
 };
