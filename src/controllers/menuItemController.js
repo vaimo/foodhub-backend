@@ -8,12 +8,12 @@ const createMenuItemForRestaurant = async (req, res) => {
     if (!name || price === undefined) {
       return res
         .status(400)
-        .json({ message: "Naam en prijs zijn verplicht voor een menu-item" });
+        .json({ message: "Name and price are required for a menu item" });
     }
     if (typeof price !== "number" || price < 0) {
       return res
         .status(400)
-        .json({ message: "Prijs moet een positief getal zijn" });
+        .json({ message: "Price must be a positive number" });
     }
 
     const restaurantExists = await prisma.restaurant.findUnique({
@@ -21,7 +21,7 @@ const createMenuItemForRestaurant = async (req, res) => {
     });
 
     if (!restaurantExists) {
-      return res.status(404).json({ message: "Restaurant niet gevonden" });
+      return res.status(404).json({ message: "Restaurant not found" });
     }
 
     const newMenuItem = await prisma.menuItem.create({
@@ -37,19 +37,19 @@ const createMenuItemForRestaurant = async (req, res) => {
     });
 
     res.status(201).json({
-      message: "Menu-item succesvol aangemaakt",
+      message: "Menu-item created succesfully",
       menuItem: newMenuItem,
     });
   } catch (error) {
     console.error("Error creating menu item:", error);
     if (error.code === "P2002" || error.message.includes("validation failed")) {
       return res.status(400).json({
-        message: "Validatiefout bij het aanmaken van het menu-item",
+        message: "Validation error while creating the menu-item",
         details: error.meta || error.message,
       });
     }
     res.status(500).json({
-      message: "Er is een fout opgetreden bij het aanmaken van het menu-item",
+      message: "An error occurred while creating the menu-item",
     });
   }
 };
@@ -63,7 +63,7 @@ const getAllMenuItemsForRestaurant = async (req, res) => {
     });
 
     if (!restaurantExists) {
-      return res.status(404).json({ message: "Restaurant niet gevonden" });
+      return res.status(404).json({ message: "Restaurant not found" });
     }
 
     const menuItems = await prisma.menuItem.findMany({
@@ -74,7 +74,7 @@ const getAllMenuItemsForRestaurant = async (req, res) => {
   } catch (error) {
     console.error("Error fetching menu items:", error);
     res.status(500).json({
-      message: "Er is een fout opgetreden bij het ophalen van de menu-items",
+      message: "An error occurred while fetching menu-items",
     });
   }
 };
@@ -85,15 +85,13 @@ const updateMenuItem = async (req, res) => {
     const { name, description, price, isActive } = req.body;
 
     if (Object.keys(req.body).length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Geen gegevens opgegeven om bij te werken" });
+      return res.status(400).json({ message: "No data provided to update" });
     }
 
     if (price !== undefined && (typeof price !== "number" || price < 0)) {
       return res
         .status(400)
-        .json({ message: "Prijs moet een positief getal zijn" });
+        .json({ message: "Price must be a positive number" });
     }
 
     const updatedMenuItem = await prisma.menuItem.update({
@@ -106,19 +104,19 @@ const updateMenuItem = async (req, res) => {
       },
     });
     res.status(200).json({
-      message: "Menu-item succesvol bijgewerkt",
+      message: "Menu-item updated successfully",
       menuItem: updatedMenuItem,
     });
   } catch (error) {
-    console.error("Fout bij bijwerken menu-item:", error);
+    console.error("Error updating menu-item:", error);
     if (error.code === "P2025") {
       return res.status(404).json({
         message:
-          "Menu-item niet gevonden of behoort niet tot het opgegeven restaurant",
+          "Menu item not found or does not belong to the specified restaurant",
       });
     }
     res.status(500).json({
-      message: "Er ging iets mis bij het bijwerken van het menu-item",
+      message: "Something went wrong while updating the menu item",
     });
   }
 };
@@ -132,7 +130,7 @@ const deleteMenuItem = async (req, res) => {
     });
 
     res.status(200).json({
-      message: "Menu-item succesvol verwijderd",
+      message: "Menu-item deleted successfully",
       menuItem: deletedMenuItem,
     });
   } catch (error) {
@@ -140,11 +138,11 @@ const deleteMenuItem = async (req, res) => {
     if (error.code === "P2025") {
       return res.status(404).json({
         message:
-          "Menu-item niet gevonden of behoort niet tot het opgegeven restaurant",
+          "Menu item not found or does not belong to the specified restaurant",
       });
     }
     res.status(500).json({
-      message: "Er ging iets mis bij het verwijderen van het menu-item",
+      message: "Something went wrong while deleting the menu item",
     });
   }
 };
