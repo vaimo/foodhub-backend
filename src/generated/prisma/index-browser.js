@@ -142,6 +142,28 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.OrderScalarFieldEnum = {
+  id: 'id',
+  restaurantId: 'restaurantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  totalPrice: 'totalPrice',
+  status: 'status'
+};
+
+exports.Prisma.OrderItemScalarFieldEnum = {
+  id: 'id',
+  orderId: 'orderId',
+  userId: 'userId',
+  menuItemId: 'menuItemId',
+  itemNameAtOrder: 'itemNameAtOrder',
+  priceAtOrder: 'priceAtOrder',
+  quantity: 'quantity',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -156,7 +178,9 @@ exports.Prisma.QueryMode = {
 exports.Prisma.ModelName = {
   Restaurant: 'Restaurant',
   MenuItem: 'MenuItem',
-  User: 'User'
+  User: 'User',
+  Order: 'Order',
+  OrderItem: 'OrderItem'
 };
 
 /**

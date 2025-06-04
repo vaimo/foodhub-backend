@@ -26,6 +26,7 @@ model Restaurant {
   updatedAt    DateTime  @updatedAt
 
   menuItems MenuItem[]
+  orders    Order[]
 }
 
 model MenuItem {
@@ -39,6 +40,8 @@ model MenuItem {
 
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId String     @db.ObjectId
+
+  orderItems OrderItem[]
 }
 
 model User {
@@ -46,4 +49,38 @@ model User {
   name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  orderItems OrderItem[]
+}
+
+model Order {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  restaurantId String     @db.ObjectId
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  totalPrice   Float?
+  status       String?
+
+  orderItems OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  orderId         String   @db.ObjectId
+  order           Order    @relation(fields: [orderId], references: [id])
+  userId          String   @db.ObjectId
+  user            User     @relation(fields: [userId], references: [id])
+  menuItemId      String   @db.ObjectId
+  menuItem        MenuItem @relation(fields: [menuItemId], references: [id])
+  itemNameAtOrder String
+  priceAtOrder    Float
+  quantity        Int
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("order_items")
 }
