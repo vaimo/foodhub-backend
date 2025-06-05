@@ -38,6 +38,11 @@ export type Order = $Result.DefaultSelection<Prisma.$OrderPayload>
  * 
  */
 export type OrderItem = $Result.DefaultSelection<Prisma.$OrderItemPayload>
+/**
+ * Model OrderComment
+ * 
+ */
+export type OrderComment = $Result.DefaultSelection<Prisma.$OrderCommentPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -180,6 +185,16 @@ export class PrismaClient<
     * ```
     */
   get orderItem(): Prisma.OrderItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.orderComment`: Exposes CRUD operations for the **OrderComment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more OrderComments
+    * const orderComments = await prisma.orderComment.findMany()
+    * ```
+    */
+  get orderComment(): Prisma.OrderCommentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -624,7 +639,8 @@ export namespace Prisma {
     MenuItem: 'MenuItem',
     User: 'User',
     Order: 'Order',
-    OrderItem: 'OrderItem'
+    OrderItem: 'OrderItem',
+    OrderComment: 'OrderComment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -643,7 +659,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "restaurant" | "menuItem" | "user" | "order" | "orderItem"
+      modelProps: "restaurant" | "menuItem" | "user" | "order" | "orderItem" | "orderComment"
       txIsolationLevel: never
     }
     model: {
@@ -1017,6 +1033,80 @@ export namespace Prisma {
           }
         }
       }
+      OrderComment: {
+        payload: Prisma.$OrderCommentPayload<ExtArgs>
+        fields: Prisma.OrderCommentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OrderCommentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderCommentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OrderCommentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderCommentPayload>
+          }
+          findFirst: {
+            args: Prisma.OrderCommentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderCommentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OrderCommentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderCommentPayload>
+          }
+          findMany: {
+            args: Prisma.OrderCommentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderCommentPayload>[]
+          }
+          create: {
+            args: Prisma.OrderCommentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderCommentPayload>
+          }
+          createMany: {
+            args: Prisma.OrderCommentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.OrderCommentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderCommentPayload>
+          }
+          update: {
+            args: Prisma.OrderCommentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderCommentPayload>
+          }
+          deleteMany: {
+            args: Prisma.OrderCommentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OrderCommentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.OrderCommentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OrderCommentPayload>
+          }
+          aggregate: {
+            args: Prisma.OrderCommentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOrderComment>
+          }
+          groupBy: {
+            args: Prisma.OrderCommentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OrderCommentGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.OrderCommentFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.OrderCommentAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.OrderCommentCountArgs<ExtArgs>
+            result: $Utils.Optional<OrderCommentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1093,6 +1183,7 @@ export namespace Prisma {
     user?: UserOmit
     order?: OrderOmit
     orderItem?: OrderItemOmit
+    orderComment?: OrderCommentOmit
   }
 
   /* Types for Logging */
@@ -1259,10 +1350,12 @@ export namespace Prisma {
 
   export type UserCountOutputType = {
     orderItems: number
+    comments: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orderItems?: boolean | UserCountOutputTypeCountOrderItemsArgs
+    comments?: boolean | UserCountOutputTypeCountCommentsArgs
   }
 
   // Custom InputTypes
@@ -1283,6 +1376,13 @@ export namespace Prisma {
     where?: OrderItemWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderCommentWhereInput
+  }
+
 
   /**
    * Count Type OrderCountOutputType
@@ -1290,10 +1390,12 @@ export namespace Prisma {
 
   export type OrderCountOutputType = {
     orderItems: number
+    comments: number
   }
 
   export type OrderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orderItems?: boolean | OrderCountOutputTypeCountOrderItemsArgs
+    comments?: boolean | OrderCountOutputTypeCountCommentsArgs
   }
 
   // Custom InputTypes
@@ -1312,6 +1414,13 @@ export namespace Prisma {
    */
   export type OrderCountOutputTypeCountOrderItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderItemWhereInput
+  }
+
+  /**
+   * OrderCountOutputType without action
+   */
+  export type OrderCountOutputTypeCountCommentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderCommentWhereInput
   }
 
 
@@ -3618,6 +3727,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     orderItems?: boolean | User$orderItemsArgs<ExtArgs>
+    comments?: boolean | User$commentsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3633,6 +3743,7 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orderItems?: boolean | User$orderItemsArgs<ExtArgs>
+    comments?: boolean | User$commentsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -3640,6 +3751,7 @@ export namespace Prisma {
     name: "User"
     objects: {
       orderItems: Prisma.$OrderItemPayload<ExtArgs>[]
+      comments: Prisma.$OrderCommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4010,6 +4122,7 @@ export namespace Prisma {
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     orderItems<T extends User$orderItemsArgs<ExtArgs> = {}>(args?: Subset<T, User$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    comments<T extends User$commentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4437,6 +4550,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.comments
+   */
+  export type User$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    where?: OrderCommentWhereInput
+    orderBy?: OrderCommentOrderByWithRelationInput | OrderCommentOrderByWithRelationInput[]
+    cursor?: OrderCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderCommentScalarFieldEnum | OrderCommentScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4663,6 +4800,7 @@ export namespace Prisma {
     status?: boolean
     restaurant?: boolean | RestaurantDefaultArgs<ExtArgs>
     orderItems?: boolean | Order$orderItemsArgs<ExtArgs>
+    comments?: boolean | Order$commentsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["order"]>
 
@@ -4681,6 +4819,7 @@ export namespace Prisma {
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     restaurant?: boolean | RestaurantDefaultArgs<ExtArgs>
     orderItems?: boolean | Order$orderItemsArgs<ExtArgs>
+    comments?: boolean | Order$commentsArgs<ExtArgs>
     _count?: boolean | OrderCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -4689,6 +4828,7 @@ export namespace Prisma {
     objects: {
       restaurant: Prisma.$RestaurantPayload<ExtArgs>
       orderItems: Prisma.$OrderItemPayload<ExtArgs>[]
+      comments: Prisma.$OrderCommentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5062,6 +5202,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     restaurant<T extends RestaurantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RestaurantDefaultArgs<ExtArgs>>): Prisma__RestaurantClient<$Result.GetResult<Prisma.$RestaurantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     orderItems<T extends Order$orderItemsArgs<ExtArgs> = {}>(args?: Subset<T, Order$orderItemsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    comments<T extends Order$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Order$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5491,6 +5632,30 @@ export namespace Prisma {
   }
 
   /**
+   * Order.comments
+   */
+  export type Order$commentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    where?: OrderCommentWhereInput
+    orderBy?: OrderCommentOrderByWithRelationInput | OrderCommentOrderByWithRelationInput[]
+    cursor?: OrderCommentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OrderCommentScalarFieldEnum | OrderCommentScalarFieldEnum[]
+  }
+
+  /**
    * Order without action
    */
   export type OrderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5539,7 +5704,6 @@ export namespace Prisma {
     itemNameAtOrder: string | null
     priceAtOrder: number | null
     quantity: number | null
-    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5552,7 +5716,6 @@ export namespace Prisma {
     itemNameAtOrder: string | null
     priceAtOrder: number | null
     quantity: number | null
-    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -5565,7 +5728,6 @@ export namespace Prisma {
     itemNameAtOrder: number
     priceAtOrder: number
     quantity: number
-    notes: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -5590,7 +5752,6 @@ export namespace Prisma {
     itemNameAtOrder?: true
     priceAtOrder?: true
     quantity?: true
-    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5603,7 +5764,6 @@ export namespace Prisma {
     itemNameAtOrder?: true
     priceAtOrder?: true
     quantity?: true
-    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -5616,7 +5776,6 @@ export namespace Prisma {
     itemNameAtOrder?: true
     priceAtOrder?: true
     quantity?: true
-    notes?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -5716,7 +5875,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes: string | null
     createdAt: Date
     updatedAt: Date
     _count: OrderItemCountAggregateOutputType | null
@@ -5748,7 +5906,6 @@ export namespace Prisma {
     itemNameAtOrder?: boolean
     priceAtOrder?: boolean
     quantity?: boolean
-    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     order?: boolean | OrderDefaultArgs<ExtArgs>
@@ -5766,12 +5923,11 @@ export namespace Prisma {
     itemNameAtOrder?: boolean
     priceAtOrder?: boolean
     quantity?: boolean
-    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "userId" | "menuItemId" | "itemNameAtOrder" | "priceAtOrder" | "quantity" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["orderItem"]>
+  export type OrderItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderId" | "userId" | "menuItemId" | "itemNameAtOrder" | "priceAtOrder" | "quantity" | "createdAt" | "updatedAt", ExtArgs["result"]["orderItem"]>
   export type OrderItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     order?: boolean | OrderDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -5793,7 +5949,6 @@ export namespace Prisma {
       itemNameAtOrder: string
       priceAtOrder: number
       quantity: number
-      notes: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["orderItem"]>
@@ -6198,7 +6353,6 @@ export namespace Prisma {
     readonly itemNameAtOrder: FieldRef<"OrderItem", 'String'>
     readonly priceAtOrder: FieldRef<"OrderItem", 'Float'>
     readonly quantity: FieldRef<"OrderItem", 'Int'>
-    readonly notes: FieldRef<"OrderItem", 'String'>
     readonly createdAt: FieldRef<"OrderItem", 'DateTime'>
     readonly updatedAt: FieldRef<"OrderItem", 'DateTime'>
   }
@@ -6590,6 +6744,1000 @@ export namespace Prisma {
 
 
   /**
+   * Model OrderComment
+   */
+
+  export type AggregateOrderComment = {
+    _count: OrderCommentCountAggregateOutputType | null
+    _min: OrderCommentMinAggregateOutputType | null
+    _max: OrderCommentMaxAggregateOutputType | null
+  }
+
+  export type OrderCommentMinAggregateOutputType = {
+    id: string | null
+    text: string | null
+    orderId: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type OrderCommentMaxAggregateOutputType = {
+    id: string | null
+    text: string | null
+    orderId: string | null
+    userId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type OrderCommentCountAggregateOutputType = {
+    id: number
+    text: number
+    orderId: number
+    userId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type OrderCommentMinAggregateInputType = {
+    id?: true
+    text?: true
+    orderId?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type OrderCommentMaxAggregateInputType = {
+    id?: true
+    text?: true
+    orderId?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type OrderCommentCountAggregateInputType = {
+    id?: true
+    text?: true
+    orderId?: true
+    userId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type OrderCommentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OrderComment to aggregate.
+     */
+    where?: OrderCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrderComments to fetch.
+     */
+    orderBy?: OrderCommentOrderByWithRelationInput | OrderCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OrderCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrderComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrderComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned OrderComments
+    **/
+    _count?: true | OrderCommentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OrderCommentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OrderCommentMaxAggregateInputType
+  }
+
+  export type GetOrderCommentAggregateType<T extends OrderCommentAggregateArgs> = {
+        [P in keyof T & keyof AggregateOrderComment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOrderComment[P]>
+      : GetScalarType<T[P], AggregateOrderComment[P]>
+  }
+
+
+
+
+  export type OrderCommentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OrderCommentWhereInput
+    orderBy?: OrderCommentOrderByWithAggregationInput | OrderCommentOrderByWithAggregationInput[]
+    by: OrderCommentScalarFieldEnum[] | OrderCommentScalarFieldEnum
+    having?: OrderCommentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OrderCommentCountAggregateInputType | true
+    _min?: OrderCommentMinAggregateInputType
+    _max?: OrderCommentMaxAggregateInputType
+  }
+
+  export type OrderCommentGroupByOutputType = {
+    id: string
+    text: string
+    orderId: string
+    userId: string
+    createdAt: Date
+    updatedAt: Date
+    _count: OrderCommentCountAggregateOutputType | null
+    _min: OrderCommentMinAggregateOutputType | null
+    _max: OrderCommentMaxAggregateOutputType | null
+  }
+
+  type GetOrderCommentGroupByPayload<T extends OrderCommentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OrderCommentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OrderCommentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OrderCommentGroupByOutputType[P]>
+            : GetScalarType<T[P], OrderCommentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OrderCommentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    text?: boolean
+    orderId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["orderComment"]>
+
+
+
+  export type OrderCommentSelectScalar = {
+    id?: boolean
+    text?: boolean
+    orderId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type OrderCommentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "text" | "orderId" | "userId" | "createdAt" | "updatedAt", ExtArgs["result"]["orderComment"]>
+  export type OrderCommentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    order?: boolean | OrderDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $OrderCommentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OrderComment"
+    objects: {
+      order: Prisma.$OrderPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      text: string
+      orderId: string
+      userId: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["orderComment"]>
+    composites: {}
+  }
+
+  type OrderCommentGetPayload<S extends boolean | null | undefined | OrderCommentDefaultArgs> = $Result.GetResult<Prisma.$OrderCommentPayload, S>
+
+  type OrderCommentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OrderCommentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OrderCommentCountAggregateInputType | true
+    }
+
+  export interface OrderCommentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OrderComment'], meta: { name: 'OrderComment' } }
+    /**
+     * Find zero or one OrderComment that matches the filter.
+     * @param {OrderCommentFindUniqueArgs} args - Arguments to find a OrderComment
+     * @example
+     * // Get one OrderComment
+     * const orderComment = await prisma.orderComment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OrderCommentFindUniqueArgs>(args: SelectSubset<T, OrderCommentFindUniqueArgs<ExtArgs>>): Prisma__OrderCommentClient<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one OrderComment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OrderCommentFindUniqueOrThrowArgs} args - Arguments to find a OrderComment
+     * @example
+     * // Get one OrderComment
+     * const orderComment = await prisma.orderComment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OrderCommentFindUniqueOrThrowArgs>(args: SelectSubset<T, OrderCommentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OrderCommentClient<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OrderComment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderCommentFindFirstArgs} args - Arguments to find a OrderComment
+     * @example
+     * // Get one OrderComment
+     * const orderComment = await prisma.orderComment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OrderCommentFindFirstArgs>(args?: SelectSubset<T, OrderCommentFindFirstArgs<ExtArgs>>): Prisma__OrderCommentClient<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OrderComment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderCommentFindFirstOrThrowArgs} args - Arguments to find a OrderComment
+     * @example
+     * // Get one OrderComment
+     * const orderComment = await prisma.orderComment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OrderCommentFindFirstOrThrowArgs>(args?: SelectSubset<T, OrderCommentFindFirstOrThrowArgs<ExtArgs>>): Prisma__OrderCommentClient<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OrderComments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderCommentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all OrderComments
+     * const orderComments = await prisma.orderComment.findMany()
+     * 
+     * // Get first 10 OrderComments
+     * const orderComments = await prisma.orderComment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const orderCommentWithIdOnly = await prisma.orderComment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OrderCommentFindManyArgs>(args?: SelectSubset<T, OrderCommentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a OrderComment.
+     * @param {OrderCommentCreateArgs} args - Arguments to create a OrderComment.
+     * @example
+     * // Create one OrderComment
+     * const OrderComment = await prisma.orderComment.create({
+     *   data: {
+     *     // ... data to create a OrderComment
+     *   }
+     * })
+     * 
+     */
+    create<T extends OrderCommentCreateArgs>(args: SelectSubset<T, OrderCommentCreateArgs<ExtArgs>>): Prisma__OrderCommentClient<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many OrderComments.
+     * @param {OrderCommentCreateManyArgs} args - Arguments to create many OrderComments.
+     * @example
+     * // Create many OrderComments
+     * const orderComment = await prisma.orderComment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OrderCommentCreateManyArgs>(args?: SelectSubset<T, OrderCommentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a OrderComment.
+     * @param {OrderCommentDeleteArgs} args - Arguments to delete one OrderComment.
+     * @example
+     * // Delete one OrderComment
+     * const OrderComment = await prisma.orderComment.delete({
+     *   where: {
+     *     // ... filter to delete one OrderComment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OrderCommentDeleteArgs>(args: SelectSubset<T, OrderCommentDeleteArgs<ExtArgs>>): Prisma__OrderCommentClient<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one OrderComment.
+     * @param {OrderCommentUpdateArgs} args - Arguments to update one OrderComment.
+     * @example
+     * // Update one OrderComment
+     * const orderComment = await prisma.orderComment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OrderCommentUpdateArgs>(args: SelectSubset<T, OrderCommentUpdateArgs<ExtArgs>>): Prisma__OrderCommentClient<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more OrderComments.
+     * @param {OrderCommentDeleteManyArgs} args - Arguments to filter OrderComments to delete.
+     * @example
+     * // Delete a few OrderComments
+     * const { count } = await prisma.orderComment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OrderCommentDeleteManyArgs>(args?: SelectSubset<T, OrderCommentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OrderComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderCommentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many OrderComments
+     * const orderComment = await prisma.orderComment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OrderCommentUpdateManyArgs>(args: SelectSubset<T, OrderCommentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one OrderComment.
+     * @param {OrderCommentUpsertArgs} args - Arguments to update or create a OrderComment.
+     * @example
+     * // Update or create a OrderComment
+     * const orderComment = await prisma.orderComment.upsert({
+     *   create: {
+     *     // ... data to create a OrderComment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the OrderComment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OrderCommentUpsertArgs>(args: SelectSubset<T, OrderCommentUpsertArgs<ExtArgs>>): Prisma__OrderCommentClient<$Result.GetResult<Prisma.$OrderCommentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OrderComments that matches the filter.
+     * @param {OrderCommentFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const orderComment = await prisma.orderComment.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: OrderCommentFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a OrderComment.
+     * @param {OrderCommentAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const orderComment = await prisma.orderComment.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: OrderCommentAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of OrderComments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderCommentCountArgs} args - Arguments to filter OrderComments to count.
+     * @example
+     * // Count the number of OrderComments
+     * const count = await prisma.orderComment.count({
+     *   where: {
+     *     // ... the filter for the OrderComments we want to count
+     *   }
+     * })
+    **/
+    count<T extends OrderCommentCountArgs>(
+      args?: Subset<T, OrderCommentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OrderCommentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a OrderComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderCommentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OrderCommentAggregateArgs>(args: Subset<T, OrderCommentAggregateArgs>): Prisma.PrismaPromise<GetOrderCommentAggregateType<T>>
+
+    /**
+     * Group by OrderComment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OrderCommentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OrderCommentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OrderCommentGroupByArgs['orderBy'] }
+        : { orderBy?: OrderCommentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OrderCommentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOrderCommentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the OrderComment model
+   */
+  readonly fields: OrderCommentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for OrderComment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OrderCommentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    order<T extends OrderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrderDefaultArgs<ExtArgs>>): Prisma__OrderClient<$Result.GetResult<Prisma.$OrderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the OrderComment model
+   */
+  interface OrderCommentFieldRefs {
+    readonly id: FieldRef<"OrderComment", 'String'>
+    readonly text: FieldRef<"OrderComment", 'String'>
+    readonly orderId: FieldRef<"OrderComment", 'String'>
+    readonly userId: FieldRef<"OrderComment", 'String'>
+    readonly createdAt: FieldRef<"OrderComment", 'DateTime'>
+    readonly updatedAt: FieldRef<"OrderComment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * OrderComment findUnique
+   */
+  export type OrderCommentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which OrderComment to fetch.
+     */
+    where: OrderCommentWhereUniqueInput
+  }
+
+  /**
+   * OrderComment findUniqueOrThrow
+   */
+  export type OrderCommentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which OrderComment to fetch.
+     */
+    where: OrderCommentWhereUniqueInput
+  }
+
+  /**
+   * OrderComment findFirst
+   */
+  export type OrderCommentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which OrderComment to fetch.
+     */
+    where?: OrderCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrderComments to fetch.
+     */
+    orderBy?: OrderCommentOrderByWithRelationInput | OrderCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OrderComments.
+     */
+    cursor?: OrderCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrderComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrderComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrderComments.
+     */
+    distinct?: OrderCommentScalarFieldEnum | OrderCommentScalarFieldEnum[]
+  }
+
+  /**
+   * OrderComment findFirstOrThrow
+   */
+  export type OrderCommentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which OrderComment to fetch.
+     */
+    where?: OrderCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrderComments to fetch.
+     */
+    orderBy?: OrderCommentOrderByWithRelationInput | OrderCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OrderComments.
+     */
+    cursor?: OrderCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrderComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrderComments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OrderComments.
+     */
+    distinct?: OrderCommentScalarFieldEnum | OrderCommentScalarFieldEnum[]
+  }
+
+  /**
+   * OrderComment findMany
+   */
+  export type OrderCommentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    /**
+     * Filter, which OrderComments to fetch.
+     */
+    where?: OrderCommentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OrderComments to fetch.
+     */
+    orderBy?: OrderCommentOrderByWithRelationInput | OrderCommentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing OrderComments.
+     */
+    cursor?: OrderCommentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OrderComments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OrderComments.
+     */
+    skip?: number
+    distinct?: OrderCommentScalarFieldEnum | OrderCommentScalarFieldEnum[]
+  }
+
+  /**
+   * OrderComment create
+   */
+  export type OrderCommentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a OrderComment.
+     */
+    data: XOR<OrderCommentCreateInput, OrderCommentUncheckedCreateInput>
+  }
+
+  /**
+   * OrderComment createMany
+   */
+  export type OrderCommentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many OrderComments.
+     */
+    data: OrderCommentCreateManyInput | OrderCommentCreateManyInput[]
+  }
+
+  /**
+   * OrderComment update
+   */
+  export type OrderCommentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a OrderComment.
+     */
+    data: XOR<OrderCommentUpdateInput, OrderCommentUncheckedUpdateInput>
+    /**
+     * Choose, which OrderComment to update.
+     */
+    where: OrderCommentWhereUniqueInput
+  }
+
+  /**
+   * OrderComment updateMany
+   */
+  export type OrderCommentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update OrderComments.
+     */
+    data: XOR<OrderCommentUpdateManyMutationInput, OrderCommentUncheckedUpdateManyInput>
+    /**
+     * Filter which OrderComments to update
+     */
+    where?: OrderCommentWhereInput
+    /**
+     * Limit how many OrderComments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * OrderComment upsert
+   */
+  export type OrderCommentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the OrderComment to update in case it exists.
+     */
+    where: OrderCommentWhereUniqueInput
+    /**
+     * In case the OrderComment found by the `where` argument doesn't exist, create a new OrderComment with this data.
+     */
+    create: XOR<OrderCommentCreateInput, OrderCommentUncheckedCreateInput>
+    /**
+     * In case the OrderComment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OrderCommentUpdateInput, OrderCommentUncheckedUpdateInput>
+  }
+
+  /**
+   * OrderComment delete
+   */
+  export type OrderCommentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+    /**
+     * Filter which OrderComment to delete.
+     */
+    where: OrderCommentWhereUniqueInput
+  }
+
+  /**
+   * OrderComment deleteMany
+   */
+  export type OrderCommentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OrderComments to delete
+     */
+    where?: OrderCommentWhereInput
+    /**
+     * Limit how many OrderComments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * OrderComment findRaw
+   */
+  export type OrderCommentFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * OrderComment aggregateRaw
+   */
+  export type OrderCommentAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * OrderComment without action
+   */
+  export type OrderCommentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OrderComment
+     */
+    select?: OrderCommentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OrderComment
+     */
+    omit?: OrderCommentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrderCommentInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -6651,12 +7799,23 @@ export namespace Prisma {
     itemNameAtOrder: 'itemNameAtOrder',
     priceAtOrder: 'priceAtOrder',
     quantity: 'quantity',
-    notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
+
+
+  export const OrderCommentScalarFieldEnum: {
+    id: 'id',
+    text: 'text',
+    orderId: 'orderId',
+    userId: 'userId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type OrderCommentScalarFieldEnum = (typeof OrderCommentScalarFieldEnum)[keyof typeof OrderCommentScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6903,6 +8062,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     orderItems?: OrderItemListRelationFilter
+    comments?: OrderCommentListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6911,6 +8071,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     orderItems?: OrderItemOrderByRelationAggregateInput
+    comments?: OrderCommentOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -6922,6 +8083,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     orderItems?: OrderItemListRelationFilter
+    comments?: OrderCommentListRelationFilter
   }, "id">
 
   export type UserOrderByWithAggregationInput = {
@@ -6956,6 +8118,7 @@ export namespace Prisma {
     status?: StringNullableFilter<"Order"> | string | null
     restaurant?: XOR<RestaurantScalarRelationFilter, RestaurantWhereInput>
     orderItems?: OrderItemListRelationFilter
+    comments?: OrderCommentListRelationFilter
   }
 
   export type OrderOrderByWithRelationInput = {
@@ -6967,6 +8130,7 @@ export namespace Prisma {
     status?: SortOrder
     restaurant?: RestaurantOrderByWithRelationInput
     orderItems?: OrderItemOrderByRelationAggregateInput
+    comments?: OrderCommentOrderByRelationAggregateInput
   }
 
   export type OrderWhereUniqueInput = Prisma.AtLeast<{
@@ -6981,6 +8145,7 @@ export namespace Prisma {
     status?: StringNullableFilter<"Order"> | string | null
     restaurant?: XOR<RestaurantScalarRelationFilter, RestaurantWhereInput>
     orderItems?: OrderItemListRelationFilter
+    comments?: OrderCommentListRelationFilter
   }, "id">
 
   export type OrderOrderByWithAggregationInput = {
@@ -7020,7 +8185,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFilter<"OrderItem"> | string
     priceAtOrder?: FloatFilter<"OrderItem"> | number
     quantity?: IntFilter<"OrderItem"> | number
-    notes?: StringNullableFilter<"OrderItem"> | string | null
     createdAt?: DateTimeFilter<"OrderItem"> | Date | string
     updatedAt?: DateTimeFilter<"OrderItem"> | Date | string
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
@@ -7036,7 +8200,6 @@ export namespace Prisma {
     itemNameAtOrder?: SortOrder
     priceAtOrder?: SortOrder
     quantity?: SortOrder
-    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     order?: OrderOrderByWithRelationInput
@@ -7055,7 +8218,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFilter<"OrderItem"> | string
     priceAtOrder?: FloatFilter<"OrderItem"> | number
     quantity?: IntFilter<"OrderItem"> | number
-    notes?: StringNullableFilter<"OrderItem"> | string | null
     createdAt?: DateTimeFilter<"OrderItem"> | Date | string
     updatedAt?: DateTimeFilter<"OrderItem"> | Date | string
     order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
@@ -7071,7 +8233,6 @@ export namespace Prisma {
     itemNameAtOrder?: SortOrder
     priceAtOrder?: SortOrder
     quantity?: SortOrder
-    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: OrderItemCountOrderByAggregateInput
@@ -7092,9 +8253,71 @@ export namespace Prisma {
     itemNameAtOrder?: StringWithAggregatesFilter<"OrderItem"> | string
     priceAtOrder?: FloatWithAggregatesFilter<"OrderItem"> | number
     quantity?: IntWithAggregatesFilter<"OrderItem"> | number
-    notes?: StringNullableWithAggregatesFilter<"OrderItem"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"OrderItem"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"OrderItem"> | Date | string
+  }
+
+  export type OrderCommentWhereInput = {
+    AND?: OrderCommentWhereInput | OrderCommentWhereInput[]
+    OR?: OrderCommentWhereInput[]
+    NOT?: OrderCommentWhereInput | OrderCommentWhereInput[]
+    id?: StringFilter<"OrderComment"> | string
+    text?: StringFilter<"OrderComment"> | string
+    orderId?: StringFilter<"OrderComment"> | string
+    userId?: StringFilter<"OrderComment"> | string
+    createdAt?: DateTimeFilter<"OrderComment"> | Date | string
+    updatedAt?: DateTimeFilter<"OrderComment"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type OrderCommentOrderByWithRelationInput = {
+    id?: SortOrder
+    text?: SortOrder
+    orderId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    order?: OrderOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type OrderCommentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: OrderCommentWhereInput | OrderCommentWhereInput[]
+    OR?: OrderCommentWhereInput[]
+    NOT?: OrderCommentWhereInput | OrderCommentWhereInput[]
+    text?: StringFilter<"OrderComment"> | string
+    orderId?: StringFilter<"OrderComment"> | string
+    userId?: StringFilter<"OrderComment"> | string
+    createdAt?: DateTimeFilter<"OrderComment"> | Date | string
+    updatedAt?: DateTimeFilter<"OrderComment"> | Date | string
+    order?: XOR<OrderScalarRelationFilter, OrderWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type OrderCommentOrderByWithAggregationInput = {
+    id?: SortOrder
+    text?: SortOrder
+    orderId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: OrderCommentCountOrderByAggregateInput
+    _max?: OrderCommentMaxOrderByAggregateInput
+    _min?: OrderCommentMinOrderByAggregateInput
+  }
+
+  export type OrderCommentScalarWhereWithAggregatesInput = {
+    AND?: OrderCommentScalarWhereWithAggregatesInput | OrderCommentScalarWhereWithAggregatesInput[]
+    OR?: OrderCommentScalarWhereWithAggregatesInput[]
+    NOT?: OrderCommentScalarWhereWithAggregatesInput | OrderCommentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"OrderComment"> | string
+    text?: StringWithAggregatesFilter<"OrderComment"> | string
+    orderId?: StringWithAggregatesFilter<"OrderComment"> | string
+    userId?: StringWithAggregatesFilter<"OrderComment"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"OrderComment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"OrderComment"> | Date | string
   }
 
   export type RestaurantCreateInput = {
@@ -7260,6 +8483,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     orderItems?: OrderItemCreateNestedManyWithoutUserInput
+    comments?: OrderCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -7268,6 +8492,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutUserInput
+    comments?: OrderCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -7275,6 +8500,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUpdateManyWithoutUserNestedInput
+    comments?: OrderCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7282,6 +8508,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     orderItems?: OrderItemUncheckedUpdateManyWithoutUserNestedInput
+    comments?: OrderCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -7311,6 +8538,7 @@ export namespace Prisma {
     status?: string | null
     restaurant: RestaurantCreateNestedOneWithoutOrdersInput
     orderItems?: OrderItemCreateNestedManyWithoutOrderInput
+    comments?: OrderCommentCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateInput = {
@@ -7321,6 +8549,7 @@ export namespace Prisma {
     totalPrice?: number | null
     status?: string | null
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    comments?: OrderCommentUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUpdateInput = {
@@ -7330,6 +8559,7 @@ export namespace Prisma {
     status?: NullableStringFieldUpdateOperationsInput | string | null
     restaurant?: RestaurantUpdateOneRequiredWithoutOrdersNestedInput
     orderItems?: OrderItemUpdateManyWithoutOrderNestedInput
+    comments?: OrderCommentUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateInput = {
@@ -7339,6 +8569,7 @@ export namespace Prisma {
     totalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     orderItems?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    comments?: OrderCommentUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderCreateManyInput = {
@@ -7370,7 +8601,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     order: OrderCreateNestedOneWithoutOrderItemsInput
@@ -7386,7 +8616,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7395,7 +8624,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     order?: OrderUpdateOneRequiredWithoutOrderItemsNestedInput
@@ -7410,7 +8638,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7423,7 +8650,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7432,7 +8658,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7444,7 +8669,63 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderCommentCreateInput = {
+    id?: string
+    text: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    order: OrderCreateNestedOneWithoutCommentsInput
+    user: UserCreateNestedOneWithoutCommentsInput
+  }
+
+  export type OrderCommentUncheckedCreateInput = {
+    id?: string
+    text: string
+    orderId: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OrderCommentUpdateInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutCommentsNestedInput
+    user?: UserUpdateOneRequiredWithoutCommentsNestedInput
+  }
+
+  export type OrderCommentUncheckedUpdateInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderCommentCreateManyInput = {
+    id?: string
+    text: string
+    orderId: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OrderCommentUpdateManyMutationInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderCommentUncheckedUpdateManyInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7718,6 +8999,16 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type OrderCommentListRelationFilter = {
+    every?: OrderCommentWhereInput
+    some?: OrderCommentWhereInput
+    none?: OrderCommentWhereInput
+  }
+
+  export type OrderCommentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -7837,7 +9128,6 @@ export namespace Prisma {
     itemNameAtOrder?: SortOrder
     priceAtOrder?: SortOrder
     quantity?: SortOrder
-    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7855,7 +9145,6 @@ export namespace Prisma {
     itemNameAtOrder?: SortOrder
     priceAtOrder?: SortOrder
     quantity?: SortOrder
-    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7868,7 +9157,6 @@ export namespace Prisma {
     itemNameAtOrder?: SortOrder
     priceAtOrder?: SortOrder
     quantity?: SortOrder
-    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7892,6 +9180,33 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type OrderCommentCountOrderByAggregateInput = {
+    id?: SortOrder
+    text?: SortOrder
+    orderId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type OrderCommentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    text?: SortOrder
+    orderId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type OrderCommentMinOrderByAggregateInput = {
+    id?: SortOrder
+    text?: SortOrder
+    orderId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type MenuItemCreateNestedManyWithoutRestaurantInput = {
@@ -8071,11 +9386,25 @@ export namespace Prisma {
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
   }
 
+  export type OrderCommentCreateNestedManyWithoutUserInput = {
+    create?: XOR<OrderCommentCreateWithoutUserInput, OrderCommentUncheckedCreateWithoutUserInput> | OrderCommentCreateWithoutUserInput[] | OrderCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrderCommentCreateOrConnectWithoutUserInput | OrderCommentCreateOrConnectWithoutUserInput[]
+    createMany?: OrderCommentCreateManyUserInputEnvelope
+    connect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+  }
+
   export type OrderItemUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<OrderItemCreateWithoutUserInput, OrderItemUncheckedCreateWithoutUserInput> | OrderItemCreateWithoutUserInput[] | OrderItemUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutUserInput | OrderItemCreateOrConnectWithoutUserInput[]
     createMany?: OrderItemCreateManyUserInputEnvelope
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+  }
+
+  export type OrderCommentUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<OrderCommentCreateWithoutUserInput, OrderCommentUncheckedCreateWithoutUserInput> | OrderCommentCreateWithoutUserInput[] | OrderCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrderCommentCreateOrConnectWithoutUserInput | OrderCommentCreateOrConnectWithoutUserInput[]
+    createMany?: OrderCommentCreateManyUserInputEnvelope
+    connect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
   }
 
   export type OrderItemUpdateManyWithoutUserNestedInput = {
@@ -8092,6 +9421,20 @@ export namespace Prisma {
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
   }
 
+  export type OrderCommentUpdateManyWithoutUserNestedInput = {
+    create?: XOR<OrderCommentCreateWithoutUserInput, OrderCommentUncheckedCreateWithoutUserInput> | OrderCommentCreateWithoutUserInput[] | OrderCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrderCommentCreateOrConnectWithoutUserInput | OrderCommentCreateOrConnectWithoutUserInput[]
+    upsert?: OrderCommentUpsertWithWhereUniqueWithoutUserInput | OrderCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: OrderCommentCreateManyUserInputEnvelope
+    set?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    disconnect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    delete?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    connect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    update?: OrderCommentUpdateWithWhereUniqueWithoutUserInput | OrderCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: OrderCommentUpdateManyWithWhereWithoutUserInput | OrderCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: OrderCommentScalarWhereInput | OrderCommentScalarWhereInput[]
+  }
+
   export type OrderItemUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<OrderItemCreateWithoutUserInput, OrderItemUncheckedCreateWithoutUserInput> | OrderItemCreateWithoutUserInput[] | OrderItemUncheckedCreateWithoutUserInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutUserInput | OrderItemCreateOrConnectWithoutUserInput[]
@@ -8104,6 +9447,20 @@ export namespace Prisma {
     update?: OrderItemUpdateWithWhereUniqueWithoutUserInput | OrderItemUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: OrderItemUpdateManyWithWhereWithoutUserInput | OrderItemUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
+  }
+
+  export type OrderCommentUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<OrderCommentCreateWithoutUserInput, OrderCommentUncheckedCreateWithoutUserInput> | OrderCommentCreateWithoutUserInput[] | OrderCommentUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: OrderCommentCreateOrConnectWithoutUserInput | OrderCommentCreateOrConnectWithoutUserInput[]
+    upsert?: OrderCommentUpsertWithWhereUniqueWithoutUserInput | OrderCommentUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: OrderCommentCreateManyUserInputEnvelope
+    set?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    disconnect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    delete?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    connect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    update?: OrderCommentUpdateWithWhereUniqueWithoutUserInput | OrderCommentUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: OrderCommentUpdateManyWithWhereWithoutUserInput | OrderCommentUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: OrderCommentScalarWhereInput | OrderCommentScalarWhereInput[]
   }
 
   export type RestaurantCreateNestedOneWithoutOrdersInput = {
@@ -8119,11 +9476,25 @@ export namespace Prisma {
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
   }
 
+  export type OrderCommentCreateNestedManyWithoutOrderInput = {
+    create?: XOR<OrderCommentCreateWithoutOrderInput, OrderCommentUncheckedCreateWithoutOrderInput> | OrderCommentCreateWithoutOrderInput[] | OrderCommentUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: OrderCommentCreateOrConnectWithoutOrderInput | OrderCommentCreateOrConnectWithoutOrderInput[]
+    createMany?: OrderCommentCreateManyOrderInputEnvelope
+    connect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+  }
+
   export type OrderItemUncheckedCreateNestedManyWithoutOrderInput = {
     create?: XOR<OrderItemCreateWithoutOrderInput, OrderItemUncheckedCreateWithoutOrderInput> | OrderItemCreateWithoutOrderInput[] | OrderItemUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutOrderInput | OrderItemCreateOrConnectWithoutOrderInput[]
     createMany?: OrderItemCreateManyOrderInputEnvelope
     connect?: OrderItemWhereUniqueInput | OrderItemWhereUniqueInput[]
+  }
+
+  export type OrderCommentUncheckedCreateNestedManyWithoutOrderInput = {
+    create?: XOR<OrderCommentCreateWithoutOrderInput, OrderCommentUncheckedCreateWithoutOrderInput> | OrderCommentCreateWithoutOrderInput[] | OrderCommentUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: OrderCommentCreateOrConnectWithoutOrderInput | OrderCommentCreateOrConnectWithoutOrderInput[]
+    createMany?: OrderCommentCreateManyOrderInputEnvelope
+    connect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -8157,6 +9528,20 @@ export namespace Prisma {
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
   }
 
+  export type OrderCommentUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<OrderCommentCreateWithoutOrderInput, OrderCommentUncheckedCreateWithoutOrderInput> | OrderCommentCreateWithoutOrderInput[] | OrderCommentUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: OrderCommentCreateOrConnectWithoutOrderInput | OrderCommentCreateOrConnectWithoutOrderInput[]
+    upsert?: OrderCommentUpsertWithWhereUniqueWithoutOrderInput | OrderCommentUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: OrderCommentCreateManyOrderInputEnvelope
+    set?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    disconnect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    delete?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    connect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    update?: OrderCommentUpdateWithWhereUniqueWithoutOrderInput | OrderCommentUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: OrderCommentUpdateManyWithWhereWithoutOrderInput | OrderCommentUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: OrderCommentScalarWhereInput | OrderCommentScalarWhereInput[]
+  }
+
   export type OrderItemUncheckedUpdateManyWithoutOrderNestedInput = {
     create?: XOR<OrderItemCreateWithoutOrderInput, OrderItemUncheckedCreateWithoutOrderInput> | OrderItemCreateWithoutOrderInput[] | OrderItemUncheckedCreateWithoutOrderInput[]
     connectOrCreate?: OrderItemCreateOrConnectWithoutOrderInput | OrderItemCreateOrConnectWithoutOrderInput[]
@@ -8169,6 +9554,20 @@ export namespace Prisma {
     update?: OrderItemUpdateWithWhereUniqueWithoutOrderInput | OrderItemUpdateWithWhereUniqueWithoutOrderInput[]
     updateMany?: OrderItemUpdateManyWithWhereWithoutOrderInput | OrderItemUpdateManyWithWhereWithoutOrderInput[]
     deleteMany?: OrderItemScalarWhereInput | OrderItemScalarWhereInput[]
+  }
+
+  export type OrderCommentUncheckedUpdateManyWithoutOrderNestedInput = {
+    create?: XOR<OrderCommentCreateWithoutOrderInput, OrderCommentUncheckedCreateWithoutOrderInput> | OrderCommentCreateWithoutOrderInput[] | OrderCommentUncheckedCreateWithoutOrderInput[]
+    connectOrCreate?: OrderCommentCreateOrConnectWithoutOrderInput | OrderCommentCreateOrConnectWithoutOrderInput[]
+    upsert?: OrderCommentUpsertWithWhereUniqueWithoutOrderInput | OrderCommentUpsertWithWhereUniqueWithoutOrderInput[]
+    createMany?: OrderCommentCreateManyOrderInputEnvelope
+    set?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    disconnect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    delete?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    connect?: OrderCommentWhereUniqueInput | OrderCommentWhereUniqueInput[]
+    update?: OrderCommentUpdateWithWhereUniqueWithoutOrderInput | OrderCommentUpdateWithWhereUniqueWithoutOrderInput[]
+    updateMany?: OrderCommentUpdateManyWithWhereWithoutOrderInput | OrderCommentUpdateManyWithWhereWithoutOrderInput[]
+    deleteMany?: OrderCommentScalarWhereInput | OrderCommentScalarWhereInput[]
   }
 
   export type OrderCreateNestedOneWithoutOrderItemsInput = {
@@ -8219,6 +9618,34 @@ export namespace Prisma {
     upsert?: MenuItemUpsertWithoutOrderItemsInput
     connect?: MenuItemWhereUniqueInput
     update?: XOR<XOR<MenuItemUpdateToOneWithWhereWithoutOrderItemsInput, MenuItemUpdateWithoutOrderItemsInput>, MenuItemUncheckedUpdateWithoutOrderItemsInput>
+  }
+
+  export type OrderCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<OrderCreateWithoutCommentsInput, OrderUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutCommentsInput
+    connect?: OrderWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCommentsInput = {
+    create?: XOR<UserCreateWithoutCommentsInput, UserUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCommentsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type OrderUpdateOneRequiredWithoutCommentsNestedInput = {
+    create?: XOR<OrderCreateWithoutCommentsInput, OrderUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: OrderCreateOrConnectWithoutCommentsInput
+    upsert?: OrderUpsertWithoutCommentsInput
+    connect?: OrderWhereUniqueInput
+    update?: XOR<XOR<OrderUpdateToOneWithWhereWithoutCommentsInput, OrderUpdateWithoutCommentsInput>, OrderUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutCommentsNestedInput = {
+    create?: XOR<UserCreateWithoutCommentsInput, UserUncheckedCreateWithoutCommentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCommentsInput
+    upsert?: UserUpsertWithoutCommentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCommentsInput, UserUpdateWithoutCommentsInput>, UserUncheckedUpdateWithoutCommentsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -8483,6 +9910,7 @@ export namespace Prisma {
     totalPrice?: number | null
     status?: string | null
     orderItems?: OrderItemCreateNestedManyWithoutOrderInput
+    comments?: OrderCommentCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutRestaurantInput = {
@@ -8492,6 +9920,7 @@ export namespace Prisma {
     totalPrice?: number | null
     status?: string | null
     orderItems?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+    comments?: OrderCommentUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutRestaurantInput = {
@@ -8595,7 +10024,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     order: OrderCreateNestedOneWithoutOrderItemsInput
@@ -8609,7 +10037,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8683,7 +10110,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFilter<"OrderItem"> | string
     priceAtOrder?: FloatFilter<"OrderItem"> | number
     quantity?: IntFilter<"OrderItem"> | number
-    notes?: StringNullableFilter<"OrderItem"> | string | null
     createdAt?: DateTimeFilter<"OrderItem"> | Date | string
     updatedAt?: DateTimeFilter<"OrderItem"> | Date | string
   }
@@ -8693,7 +10119,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     order: OrderCreateNestedOneWithoutOrderItemsInput
@@ -8707,7 +10132,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8719,6 +10143,31 @@ export namespace Prisma {
 
   export type OrderItemCreateManyUserInputEnvelope = {
     data: OrderItemCreateManyUserInput | OrderItemCreateManyUserInput[]
+  }
+
+  export type OrderCommentCreateWithoutUserInput = {
+    id?: string
+    text: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    order: OrderCreateNestedOneWithoutCommentsInput
+  }
+
+  export type OrderCommentUncheckedCreateWithoutUserInput = {
+    id?: string
+    text: string
+    orderId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OrderCommentCreateOrConnectWithoutUserInput = {
+    where: OrderCommentWhereUniqueInput
+    create: XOR<OrderCommentCreateWithoutUserInput, OrderCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type OrderCommentCreateManyUserInputEnvelope = {
+    data: OrderCommentCreateManyUserInput | OrderCommentCreateManyUserInput[]
   }
 
   export type OrderItemUpsertWithWhereUniqueWithoutUserInput = {
@@ -8735,6 +10184,34 @@ export namespace Prisma {
   export type OrderItemUpdateManyWithWhereWithoutUserInput = {
     where: OrderItemScalarWhereInput
     data: XOR<OrderItemUpdateManyMutationInput, OrderItemUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type OrderCommentUpsertWithWhereUniqueWithoutUserInput = {
+    where: OrderCommentWhereUniqueInput
+    update: XOR<OrderCommentUpdateWithoutUserInput, OrderCommentUncheckedUpdateWithoutUserInput>
+    create: XOR<OrderCommentCreateWithoutUserInput, OrderCommentUncheckedCreateWithoutUserInput>
+  }
+
+  export type OrderCommentUpdateWithWhereUniqueWithoutUserInput = {
+    where: OrderCommentWhereUniqueInput
+    data: XOR<OrderCommentUpdateWithoutUserInput, OrderCommentUncheckedUpdateWithoutUserInput>
+  }
+
+  export type OrderCommentUpdateManyWithWhereWithoutUserInput = {
+    where: OrderCommentScalarWhereInput
+    data: XOR<OrderCommentUpdateManyMutationInput, OrderCommentUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type OrderCommentScalarWhereInput = {
+    AND?: OrderCommentScalarWhereInput | OrderCommentScalarWhereInput[]
+    OR?: OrderCommentScalarWhereInput[]
+    NOT?: OrderCommentScalarWhereInput | OrderCommentScalarWhereInput[]
+    id?: StringFilter<"OrderComment"> | string
+    text?: StringFilter<"OrderComment"> | string
+    orderId?: StringFilter<"OrderComment"> | string
+    userId?: StringFilter<"OrderComment"> | string
+    createdAt?: DateTimeFilter<"OrderComment"> | Date | string
+    updatedAt?: DateTimeFilter<"OrderComment"> | Date | string
   }
 
   export type RestaurantCreateWithoutOrdersInput = {
@@ -8771,7 +10248,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutOrderItemsInput
@@ -8785,7 +10261,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -8797,6 +10272,31 @@ export namespace Prisma {
 
   export type OrderItemCreateManyOrderInputEnvelope = {
     data: OrderItemCreateManyOrderInput | OrderItemCreateManyOrderInput[]
+  }
+
+  export type OrderCommentCreateWithoutOrderInput = {
+    id?: string
+    text: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutCommentsInput
+  }
+
+  export type OrderCommentUncheckedCreateWithoutOrderInput = {
+    id?: string
+    text: string
+    userId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OrderCommentCreateOrConnectWithoutOrderInput = {
+    where: OrderCommentWhereUniqueInput
+    create: XOR<OrderCommentCreateWithoutOrderInput, OrderCommentUncheckedCreateWithoutOrderInput>
+  }
+
+  export type OrderCommentCreateManyOrderInputEnvelope = {
+    data: OrderCommentCreateManyOrderInput | OrderCommentCreateManyOrderInput[]
   }
 
   export type RestaurantUpsertWithoutOrdersInput = {
@@ -8848,6 +10348,22 @@ export namespace Prisma {
     data: XOR<OrderItemUpdateManyMutationInput, OrderItemUncheckedUpdateManyWithoutOrderInput>
   }
 
+  export type OrderCommentUpsertWithWhereUniqueWithoutOrderInput = {
+    where: OrderCommentWhereUniqueInput
+    update: XOR<OrderCommentUpdateWithoutOrderInput, OrderCommentUncheckedUpdateWithoutOrderInput>
+    create: XOR<OrderCommentCreateWithoutOrderInput, OrderCommentUncheckedCreateWithoutOrderInput>
+  }
+
+  export type OrderCommentUpdateWithWhereUniqueWithoutOrderInput = {
+    where: OrderCommentWhereUniqueInput
+    data: XOR<OrderCommentUpdateWithoutOrderInput, OrderCommentUncheckedUpdateWithoutOrderInput>
+  }
+
+  export type OrderCommentUpdateManyWithWhereWithoutOrderInput = {
+    where: OrderCommentScalarWhereInput
+    data: XOR<OrderCommentUpdateManyMutationInput, OrderCommentUncheckedUpdateManyWithoutOrderInput>
+  }
+
   export type OrderCreateWithoutOrderItemsInput = {
     id?: string
     createdAt?: Date | string
@@ -8855,6 +10371,7 @@ export namespace Prisma {
     totalPrice?: number | null
     status?: string | null
     restaurant: RestaurantCreateNestedOneWithoutOrdersInput
+    comments?: OrderCommentCreateNestedManyWithoutOrderInput
   }
 
   export type OrderUncheckedCreateWithoutOrderItemsInput = {
@@ -8864,6 +10381,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
+    comments?: OrderCommentUncheckedCreateNestedManyWithoutOrderInput
   }
 
   export type OrderCreateOrConnectWithoutOrderItemsInput = {
@@ -8876,6 +10394,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    comments?: OrderCommentCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOrderItemsInput = {
@@ -8883,6 +10402,7 @@ export namespace Prisma {
     name: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    comments?: OrderCommentUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOrderItemsInput = {
@@ -8934,6 +10454,7 @@ export namespace Prisma {
     totalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     restaurant?: RestaurantUpdateOneRequiredWithoutOrdersNestedInput
+    comments?: OrderCommentUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutOrderItemsInput = {
@@ -8942,6 +10463,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
+    comments?: OrderCommentUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type UserUpsertWithoutOrderItemsInput = {
@@ -8959,12 +10481,14 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    comments?: OrderCommentUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOrderItemsInput = {
     name?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    comments?: OrderCommentUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MenuItemUpsertWithoutOrderItemsInput = {
@@ -8996,6 +10520,106 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     restaurantId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type OrderCreateWithoutCommentsInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    totalPrice?: number | null
+    status?: string | null
+    restaurant: RestaurantCreateNestedOneWithoutOrdersInput
+    orderItems?: OrderItemCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderUncheckedCreateWithoutCommentsInput = {
+    id?: string
+    restaurantId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    totalPrice?: number | null
+    status?: string | null
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutOrderInput
+  }
+
+  export type OrderCreateOrConnectWithoutCommentsInput = {
+    where: OrderWhereUniqueInput
+    create: XOR<OrderCreateWithoutCommentsInput, OrderUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type UserCreateWithoutCommentsInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orderItems?: OrderItemCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCommentsInput = {
+    id?: string
+    name: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    orderItems?: OrderItemUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCommentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCommentsInput, UserUncheckedCreateWithoutCommentsInput>
+  }
+
+  export type OrderUpsertWithoutCommentsInput = {
+    update: XOR<OrderUpdateWithoutCommentsInput, OrderUncheckedUpdateWithoutCommentsInput>
+    create: XOR<OrderCreateWithoutCommentsInput, OrderUncheckedCreateWithoutCommentsInput>
+    where?: OrderWhereInput
+  }
+
+  export type OrderUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: OrderWhereInput
+    data: XOR<OrderUpdateWithoutCommentsInput, OrderUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type OrderUpdateWithoutCommentsInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    restaurant?: RestaurantUpdateOneRequiredWithoutOrdersNestedInput
+    orderItems?: OrderItemUpdateManyWithoutOrderNestedInput
+  }
+
+  export type OrderUncheckedUpdateWithoutCommentsInput = {
+    restaurantId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    totalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
+    status?: NullableStringFieldUpdateOperationsInput | string | null
+    orderItems?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+  }
+
+  export type UserUpsertWithoutCommentsInput = {
+    update: XOR<UserUpdateWithoutCommentsInput, UserUncheckedUpdateWithoutCommentsInput>
+    create: XOR<UserCreateWithoutCommentsInput, UserUncheckedCreateWithoutCommentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCommentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCommentsInput, UserUncheckedUpdateWithoutCommentsInput>
+  }
+
+  export type UserUpdateWithoutCommentsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCommentsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    orderItems?: OrderItemUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MenuItemCreateManyRestaurantInput = {
@@ -9051,6 +10675,7 @@ export namespace Prisma {
     totalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     orderItems?: OrderItemUpdateManyWithoutOrderNestedInput
+    comments?: OrderCommentUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateWithoutRestaurantInput = {
@@ -9059,6 +10684,7 @@ export namespace Prisma {
     totalPrice?: NullableFloatFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
     orderItems?: OrderItemUncheckedUpdateManyWithoutOrderNestedInput
+    comments?: OrderCommentUncheckedUpdateManyWithoutOrderNestedInput
   }
 
   export type OrderUncheckedUpdateManyWithoutRestaurantInput = {
@@ -9075,7 +10701,6 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9084,7 +10709,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     order?: OrderUpdateOneRequiredWithoutOrderItemsNestedInput
@@ -9097,7 +10721,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9108,7 +10731,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9120,7 +10742,14 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OrderCommentCreateManyUserInput = {
+    id?: string
+    text: string
+    orderId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9129,7 +10758,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     order?: OrderUpdateOneRequiredWithoutOrderItemsNestedInput
@@ -9142,7 +10770,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9153,7 +10780,27 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderCommentUpdateWithoutUserInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    order?: OrderUpdateOneRequiredWithoutCommentsNestedInput
+  }
+
+  export type OrderCommentUncheckedUpdateWithoutUserInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderCommentUncheckedUpdateManyWithoutUserInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    orderId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9165,7 +10812,14 @@ export namespace Prisma {
     itemNameAtOrder: string
     priceAtOrder: number
     quantity: number
-    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type OrderCommentCreateManyOrderInput = {
+    id?: string
+    text: string
+    userId: string
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -9174,7 +10828,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutOrderItemsNestedInput
@@ -9187,7 +10840,6 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -9198,7 +10850,27 @@ export namespace Prisma {
     itemNameAtOrder?: StringFieldUpdateOperationsInput | string
     priceAtOrder?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderCommentUpdateWithoutOrderInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutCommentsNestedInput
+  }
+
+  export type OrderCommentUncheckedUpdateWithoutOrderInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OrderCommentUncheckedUpdateManyWithoutOrderInput = {
+    text?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

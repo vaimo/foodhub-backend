@@ -51,6 +51,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   orderItems OrderItem[]
+  comments   OrderComment[]
 }
 
 model Order {
@@ -63,8 +64,7 @@ model Order {
   status       String?
 
   orderItems OrderItem[]
-
-  @@map("orders")
+  comments   OrderComment[]
 }
 
 model OrderItem {
@@ -78,9 +78,17 @@ model OrderItem {
   itemNameAtOrder String
   priceAtOrder    Float
   quantity        Int
-  notes           String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
 
-  @@map("order_items")
+model OrderComment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  text      String
+  orderId   String   @db.ObjectId
+  order     Order    @relation(fields: [orderId], references: [id])
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
