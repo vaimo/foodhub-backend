@@ -1,7 +1,7 @@
 const prisma = require("../db/prismaClient");
 
 const createOrder = async (req, res) => {
-  const { restaurantId, items, comments } = req.body;
+  const { restaurantId, items, generalComment } = req.body;
   if (!restaurantId) {
     return res.status(400).json({ message: "Restaurant ID is required" });
   }
@@ -26,6 +26,22 @@ const createOrder = async (req, res) => {
         invalidItem: item,
       });
     }
+  }
+
+  if (
+    generalComment &&
+    typeof generalComment.text === "string" &&
+    generalComment.text.trim() !== "" &&
+    !generalComment.userId
+  ) {
+    return res.status(400).json({
+      message: "General comment must have a userId if text is provided",
+    });
+  }
+  if (generalComment && !generalComment.text && generalComment.userId) {
+    return res.status(400).json({
+      message: "General comment must have text if userId is provided",
+    });
   }
 
   try {
@@ -55,14 +71,18 @@ const createOrder = async (req, res) => {
         data: orderItemsData,
       });
 
-      if (comments && Array.isArray(comments) && comments.length > 0) {
-        const commentData = comments.map((comment) => ({
-          orderId: order.id,
-          userId: comment.userId,
-          text: comment.text,
-        }));
-        await tx.orderComment.createMany({
-          data: commentData,
+      if (
+        generalComment &&
+        typeof generalComment.text === "string" &&
+        generalComment.text.trim() !== "" &&
+        generalComment.userId
+      ) {
+        await tx.orderComment.create({
+          data: {
+            orderId: order.id,
+            userId: generalComment.userId,
+            text: generalComment.text.trim(),
+          },
         });
       }
 
