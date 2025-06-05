@@ -1,7 +1,7 @@
 const prisma = require("../db/prismaClient");
 
 const createOrder = async (req, res) => {
-  const { restaurantId, items } = req.body;
+  const { restaurantId, items, comments } = req.body;
   if (!restaurantId) {
     return res.status(400).json({ message: "Restaurant ID is required" });
   }
@@ -50,11 +50,22 @@ const createOrder = async (req, res) => {
         itemNameAtOrder: item.itemNameAtOrder,
         priceAtOrder: item.priceAtOrder,
         quantity: item.quantity,
-        notes: item.notes,
       }));
       await tx.orderItem.createMany({
         data: orderItemsData,
       });
+
+      if (comments && Array.isArray(comments) && comments.length > 0) {
+        const commentData = comments.map((comment) => ({
+          orderId: order.id,
+          userId: comment.userId,
+          text: comment.text,
+        }));
+        await tx.orderComment.createMany({
+          data: commentData,
+        });
+      }
+
       return tx.order.findUnique({
         where: { id: order.id },
         include: {
@@ -65,6 +76,11 @@ const createOrder = async (req, res) => {
             },
           },
           restaurant: { select: { id: true, name: true } },
+          comments: {
+            include: {
+              user: { select: { id: true, name: true } },
+            },
+          },
         },
       });
     });
@@ -93,7 +109,85 @@ const createOrder = async (req, res) => {
   }
 };
 
+const getOrderBySummaryForRestaurant = async (req, res) => {
+  const { restaurantId } = req.params;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  if (!restaurantId) {
+    return res.status(400).json({ message: "Restaurant ID is required" });
+  }
+
+  try {
+    const orderItems = await prisma.orderItem.findMany({
+      where: {
+        order: {
+          restaurantId: restaurantId,
+          createdAt: {
+            gte: today,
+            lt: tomorrow,
+          },
+        },
+      },
+
+      include: {
+        order: {
+          include: {
+            comments: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (!orderItems || orderItems.length === 0) {
+      return res.status(404).json({ message: "No orders found for today" });
+    }
+
+    const summary = {};
+    const orderComments = {};
+
+    orderItems.forEach((item) => {
+      if (item.order.comments && item.order.comments.length > 0) {
+        orderComments[item.orderId] = item.order.comments;
+      }
+      if (!summary[item.menuItemId]) {
+        summary[item.menuItemId] = {
+          menuItemId: item.menuItemId,
+          itemName: item.itemNameAtOrder,
+          totalQuantity: 0,
+          pricePerItem: item.priceAtOrder,
+          instances: [],
+        };
+      }
+      summary[item.menuItemId].instances.push({
+        quantity: item.quantity,
+      });
+
+      summary[item.menuItemId].totalQuantity += item.quantity;
+    });
+
+    const aggregatedSummary = Object.values(summary);
+    const allComments = Object.values(orderComments).flat();
+
+    res.status(200).json({
+      summary: aggregatedSummary,
+      comments: allComments,
+    });
+  } catch (error) {
+    console.error(`Error fetching order summary for ${restaurantId}:`, error);
+    res.status(500).json({
+      message: "An error occurred while fetching the order summary",
+    });
+  }
+};
+
 module.exports = {
   createOrder,
-  // Add other order-related functions here, such as getAllOrders, getOrderById, etc.
+  getOrderBySummaryForRestaurant,
 };
