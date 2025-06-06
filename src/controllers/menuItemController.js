@@ -10,11 +10,15 @@ const createMenuItemForRestaurant = async (req, res) => {
         .status(400)
         .json({ message: "Name and price are required for a menu item" });
     }
-    if (typeof price !== "number" || price < 0) {
+
+    const priceAsFloat = parseFloat(price);
+    if (isNaN(priceAsFloat) || priceAsFloat < 0) {
       return res
         .status(400)
         .json({ message: "Price must be a positive number" });
     }
+
+    const priceInCents = Math.round(priceAsFloat * 100);
 
     const restaurantExists = await prisma.restaurant.findUnique({
       where: { id: restaurantId },
@@ -28,7 +32,7 @@ const createMenuItemForRestaurant = async (req, res) => {
       data: {
         name,
         description,
-        price,
+        price: priceInCents,
         isActive: isActive !== undefined ? isActive : true,
         restaurant: {
           connect: { id: restaurantId },
@@ -94,14 +98,22 @@ const updateMenuItem = async (req, res) => {
         .json({ message: "Price must be a positive number" });
     }
 
+    const dataToUpdate = {};
+    if (name !== undefined) dataToUpdate.name = name;
+    if (description !== undefined) dataToUpdate.description = description;
+    if (isActive !== undefined) dataToUpdate.isActive = isActive;
+
+    if (price !== undefined) {
+      const priceAsFloat = parseFloat(price);
+      if (isNaN(priceAsFloat) || priceAsFloat < 0) {
+        return res.status(400).json({ message: "Invalid price value" });
+      }
+      dataToUpdate.price = Math.round(priceAsFloat * 100);
+    }
+
     const updatedMenuItem = await prisma.menuItem.update({
       where: { id: menuItemId, restaurantId: restaurantId },
-      data: {
-        name,
-        description,
-        price,
-        isActive,
-      },
+      data: dataToUpdate,
     });
     res.status(200).json({
       message: "Menu-item updated successfully",
