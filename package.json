@@ -19,12 +19,12 @@
   "homepage": "https://github.com/vaimo/foodhub-backend#readme",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^6.8.2",
+    "@prisma/client": "^6.9.0",
     "cors": "^2.8.5",
     "express": "^5.1.0"
   },
   "devDependencies": {
     "@ljharb/tsconfig": "^0.3.2",
-    "prisma": "^6.8.2"
+    "prisma": "^6.9.0"
   }
 }

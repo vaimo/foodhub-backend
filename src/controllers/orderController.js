@@ -86,23 +86,25 @@ const createOrder = async (req, res) => {
         });
       }
 
-      return tx.order.findUnique({
+      const totalInCents = orderItemsData.reduce(
+        (acc, currentItem) =>
+          acc + currentItem.priceAtOrder * currentItem.quantity,
+        0
+      );
+
+      const finalOrder = await tx.order.update({
         where: { id: order.id },
+        data: {
+          totalPrice: totalInCents,
+        },
         include: {
-          orderItems: {
-            include: {
-              user: { select: { id: true, name: true } },
-              menuItem: { select: { id: true, name: true, price: true } },
-            },
-          },
-          restaurant: { select: { id: true, name: true } },
-          comments: {
-            include: {
-              user: { select: { id: true, name: true } },
-            },
-          },
+          orderItems: { include: { user: true } },
+          restaurant: true,
+          comments: { include: { user: true } },
         },
       });
+
+      return finalOrder;
     });
     res.status(201).json({
       message: "Order successfully created",
