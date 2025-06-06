@@ -156,6 +156,12 @@ const getOrderBySummaryForRestaurant = async (req, res) => {
       },
 
       include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         order: {
           include: {
             comments: {
@@ -173,6 +179,7 @@ const getOrderBySummaryForRestaurant = async (req, res) => {
 
     const summary = {};
     const orderComments = {};
+    const detailsByUser = {};
 
     orderItems.forEach((item) => {
       if (item.order.comments && item.order.comments.length > 0) {
@@ -192,6 +199,22 @@ const getOrderBySummaryForRestaurant = async (req, res) => {
       });
 
       summary[item.menuItemId].totalQuantity += item.quantity;
+
+      const userId = item.userId;
+      if (!detailsByUser[userId]) {
+        detailsByUser[userId] = {
+          userName: item.user.name,
+          userTotal: 0,
+          items: [],
+        };
+      }
+      detailsByUser[userId].items.push({
+        itemName: item.itemNameAtOrder,
+        quantity: item.quantity,
+        price: item.priceAtOrder,
+        totalPrice: item.quantity * item.priceAtOrder,
+      });
+      detailsByUser[userId].userTotal += item.quantity * item.priceAtOrder;
     });
 
     const aggregatedSummary = Object.values(summary);
@@ -199,6 +222,7 @@ const getOrderBySummaryForRestaurant = async (req, res) => {
 
     res.status(200).json({
       summary: aggregatedSummary,
+      detailsByUser: detailsByUser,
       comments: allComments,
     });
   } catch (error) {
