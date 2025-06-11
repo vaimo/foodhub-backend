@@ -174,7 +174,7 @@ const getOrderBySummaryForRestaurant = async (req, res) => {
       },
     });
     if (!orderItems || orderItems.length === 0) {
-      return res.status(404).json({ message: "No orders found for today" });
+      return res.status(200).json([]);
     }
 
     const summary = {};
