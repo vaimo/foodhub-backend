@@ -54,7 +54,6 @@ const createOrder = async (req, res) => {
         .json({ message: `Restaurant with ID ${restaurantId} not found` });
     }
     const newOrder = await prisma.$transaction(async (tx) => {
-      // Randi
       const today = new Date();
       const existingOrder = await tx.order.findFirst({
         where: {
