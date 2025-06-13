@@ -54,11 +54,24 @@ const createOrder = async (req, res) => {
         .json({ message: `Restaurant with ID ${restaurantId} not found` });
     }
     const newOrder = await prisma.$transaction(async (tx) => {
-      const order = await tx.order.create({
-        data: {
+      // Randi
+      const today = new Date();
+      const existingOrder = await tx.order.findFirst({
+        where: {
           restaurantId: restaurantId,
+          creationDate: today,
         },
       });
+      if (existingOrder) {
+        return existingOrder;
+      } else {
+        const order = await tx.order.create({
+          data: {
+            restaurantId: restaurantId,
+            creationDate: today,
+          },
+        });
+      }
       const orderItemsData = items.map((item) => ({
         orderId: order.id,
         userId: item.userId,
