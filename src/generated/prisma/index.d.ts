@@ -4615,7 +4615,7 @@ export namespace Prisma {
   export type OrderMinAggregateOutputType = {
     id: string | null
     restaurantId: string | null
-    creationDate: Date | null
+    createdAt: Date | null
     updatedAt: Date | null
     totalPrice: number | null
     status: string | null
@@ -4624,7 +4624,7 @@ export namespace Prisma {
   export type OrderMaxAggregateOutputType = {
     id: string | null
     restaurantId: string | null
-    creationDate: Date | null
+    createdAt: Date | null
     updatedAt: Date | null
     totalPrice: number | null
     status: string | null
@@ -4633,7 +4633,7 @@ export namespace Prisma {
   export type OrderCountAggregateOutputType = {
     id: number
     restaurantId: number
-    creationDate: number
+    createdAt: number
     updatedAt: number
     totalPrice: number
     status: number
@@ -4652,7 +4652,7 @@ export namespace Prisma {
   export type OrderMinAggregateInputType = {
     id?: true
     restaurantId?: true
-    creationDate?: true
+    createdAt?: true
     updatedAt?: true
     totalPrice?: true
     status?: true
@@ -4661,7 +4661,7 @@ export namespace Prisma {
   export type OrderMaxAggregateInputType = {
     id?: true
     restaurantId?: true
-    creationDate?: true
+    createdAt?: true
     updatedAt?: true
     totalPrice?: true
     status?: true
@@ -4670,7 +4670,7 @@ export namespace Prisma {
   export type OrderCountAggregateInputType = {
     id?: true
     restaurantId?: true
-    creationDate?: true
+    createdAt?: true
     updatedAt?: true
     totalPrice?: true
     status?: true
@@ -4766,7 +4766,7 @@ export namespace Prisma {
   export type OrderGroupByOutputType = {
     id: string
     restaurantId: string
-    creationDate: Date
+    createdAt: Date
     updatedAt: Date
     totalPrice: number | null
     status: string | null
@@ -4794,7 +4794,7 @@ export namespace Prisma {
   export type OrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     restaurantId?: boolean
-    creationDate?: boolean
+    createdAt?: boolean
     updatedAt?: boolean
     totalPrice?: boolean
     status?: boolean
@@ -4809,13 +4809,13 @@ export namespace Prisma {
   export type OrderSelectScalar = {
     id?: boolean
     restaurantId?: boolean
-    creationDate?: boolean
+    createdAt?: boolean
     updatedAt?: boolean
     totalPrice?: boolean
     status?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "restaurantId" | "creationDate" | "updatedAt" | "totalPrice" | "status", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "restaurantId" | "createdAt" | "updatedAt" | "totalPrice" | "status", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     restaurant?: boolean | RestaurantDefaultArgs<ExtArgs>
     orderItems?: boolean | Order$orderItemsArgs<ExtArgs>
@@ -4833,7 +4833,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       restaurantId: string
-      creationDate: Date
+      createdAt: Date
       updatedAt: Date
       totalPrice: number | null
       status: string | null
@@ -5234,7 +5234,7 @@ export namespace Prisma {
   interface OrderFieldRefs {
     readonly id: FieldRef<"Order", 'String'>
     readonly restaurantId: FieldRef<"Order", 'String'>
-    readonly creationDate: FieldRef<"Order", 'DateTime'>
+    readonly createdAt: FieldRef<"Order", 'DateTime'>
     readonly updatedAt: FieldRef<"Order", 'DateTime'>
     readonly totalPrice: FieldRef<"Order", 'Int'>
     readonly status: FieldRef<"Order", 'String'>
@@ -7782,7 +7782,7 @@ export namespace Prisma {
   export const OrderScalarFieldEnum: {
     id: 'id',
     restaurantId: 'restaurantId',
-    creationDate: 'creationDate',
+    createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     totalPrice: 'totalPrice',
     status: 'status'
@@ -8112,7 +8112,7 @@ export namespace Prisma {
     NOT?: OrderWhereInput | OrderWhereInput[]
     id?: StringFilter<"Order"> | string
     restaurantId?: StringFilter<"Order"> | string
-    creationDate?: DateTimeFilter<"Order"> | Date | string
+    createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     totalPrice?: IntNullableFilter<"Order"> | number | null
     status?: StringNullableFilter<"Order"> | string | null
@@ -8124,7 +8124,7 @@ export namespace Prisma {
   export type OrderOrderByWithRelationInput = {
     id?: SortOrder
     restaurantId?: SortOrder
-    creationDate?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
@@ -8139,7 +8139,7 @@ export namespace Prisma {
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
     restaurantId?: StringFilter<"Order"> | string
-    creationDate?: DateTimeFilter<"Order"> | Date | string
+    createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     totalPrice?: IntNullableFilter<"Order"> | number | null
     status?: StringNullableFilter<"Order"> | string | null
@@ -8151,7 +8151,7 @@ export namespace Prisma {
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
     restaurantId?: SortOrder
-    creationDate?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
@@ -8168,7 +8168,7 @@ export namespace Prisma {
     NOT?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Order"> | string
     restaurantId?: StringWithAggregatesFilter<"Order"> | string
-    creationDate?: DateTimeWithAggregatesFilter<"Order"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Order"> | Date | string
     totalPrice?: IntNullableWithAggregatesFilter<"Order"> | number | null
     status?: StringNullableWithAggregatesFilter<"Order"> | string | null
@@ -8532,7 +8532,7 @@ export namespace Prisma {
 
   export type OrderCreateInput = {
     id?: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
@@ -8544,7 +8544,7 @@ export namespace Prisma {
   export type OrderUncheckedCreateInput = {
     id?: string
     restaurantId: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
@@ -8553,7 +8553,7 @@ export namespace Prisma {
   }
 
   export type OrderUpdateInput = {
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8564,7 +8564,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateInput = {
     restaurantId?: StringFieldUpdateOperationsInput | string
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8575,14 +8575,14 @@ export namespace Prisma {
   export type OrderCreateManyInput = {
     id?: string
     restaurantId: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
   }
 
   export type OrderUpdateManyMutationInput = {
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8590,7 +8590,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateManyInput = {
     restaurantId?: StringFieldUpdateOperationsInput | string
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -9045,7 +9045,7 @@ export namespace Prisma {
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
     restaurantId?: SortOrder
-    creationDate?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
@@ -9058,7 +9058,7 @@ export namespace Prisma {
   export type OrderMaxOrderByAggregateInput = {
     id?: SortOrder
     restaurantId?: SortOrder
-    creationDate?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
@@ -9067,7 +9067,7 @@ export namespace Prisma {
   export type OrderMinOrderByAggregateInput = {
     id?: SortOrder
     restaurantId?: SortOrder
-    creationDate?: SortOrder
+    createdAt?: SortOrder
     updatedAt?: SortOrder
     totalPrice?: SortOrder
     status?: SortOrder
@@ -9854,7 +9854,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutRestaurantInput = {
     id?: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
@@ -9864,7 +9864,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateWithoutRestaurantInput = {
     id?: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
@@ -9933,7 +9933,7 @@ export namespace Prisma {
     NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
     id?: StringFilter<"Order"> | string
     restaurantId?: StringFilter<"Order"> | string
-    creationDate?: DateTimeFilter<"Order"> | Date | string
+    createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
     totalPrice?: IntNullableFilter<"Order"> | number | null
     status?: StringNullableFilter<"Order"> | string | null
@@ -10315,7 +10315,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutOrderItemsInput = {
     id?: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
@@ -10326,7 +10326,7 @@ export namespace Prisma {
   export type OrderUncheckedCreateWithoutOrderItemsInput = {
     id?: string
     restaurantId: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
@@ -10398,7 +10398,7 @@ export namespace Prisma {
   }
 
   export type OrderUpdateWithoutOrderItemsInput = {
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10408,7 +10408,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateWithoutOrderItemsInput = {
     restaurantId?: StringFieldUpdateOperationsInput | string
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10473,7 +10473,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutCommentsInput = {
     id?: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
@@ -10484,7 +10484,7 @@ export namespace Prisma {
   export type OrderUncheckedCreateWithoutCommentsInput = {
     id?: string
     restaurantId: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
@@ -10529,7 +10529,7 @@ export namespace Prisma {
   }
 
   export type OrderUpdateWithoutCommentsInput = {
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10539,7 +10539,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateWithoutCommentsInput = {
     restaurantId?: StringFieldUpdateOperationsInput | string
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10583,7 +10583,7 @@ export namespace Prisma {
 
   export type OrderCreateManyRestaurantInput = {
     id?: string
-    creationDate: Date | string
+    createdAt?: Date | string
     updatedAt?: Date | string
     totalPrice?: number | null
     status?: string | null
@@ -10619,7 +10619,7 @@ export namespace Prisma {
   }
 
   export type OrderUpdateWithoutRestaurantInput = {
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10628,7 +10628,7 @@ export namespace Prisma {
   }
 
   export type OrderUncheckedUpdateWithoutRestaurantInput = {
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10637,7 +10637,7 @@ export namespace Prisma {
   }
 
   export type OrderUncheckedUpdateManyWithoutRestaurantInput = {
-    creationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     totalPrice?: NullableIntFieldUpdateOperationsInput | number | null
     status?: NullableStringFieldUpdateOperationsInput | string | null

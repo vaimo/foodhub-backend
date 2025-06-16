@@ -343,9 +343,7 @@ const getExistingOrderFromToday = async (req, res) => {
     });
 
     if (orderItems.length === 0) {
-      return res.status(404).json({
-        message: "No order found for this user at this restaurant today.",
-      });
+      return res.status(200).json(null);
     }
 
     const order = orderItems[0].order;
