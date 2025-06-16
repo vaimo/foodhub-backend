@@ -307,8 +307,70 @@ const deleteOrderForUser = async (req, res) => {
   }
 };
 
+const getExistingOrderFromToday = async (req, res) => {
+  const { restaurantId, userId } = req.params;
+
+  if (!restaurantId || !userId) {
+    return res
+      .status(400)
+      .json({ message: "Restaurant ID en User ID are required" });
+  }
+
+  try {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+
+    const orderItems = await prisma.orderItem.findMany({
+      where: {
+        userId: userId,
+        order: {
+          restaurantId: restaurantId,
+          createdAt: {
+            gte: today,
+            lt: tomorrow,
+          },
+        },
+      },
+      include: {
+        order: {
+          include: {
+            comments: { where: { userId: userId } },
+          },
+        },
+      },
+    });
+
+    if (orderItems.length === 0) {
+      return res.status(404).json({
+        message: "No order found for this user at this restaurant today.",
+      });
+    }
+
+    const order = orderItems[0].order;
+    const generalComment =
+      order.comments.length > 0 ? order.comments[0].text : "";
+
+    res.status(200).json({
+      orderId: order.id,
+      items: orderItems.map((item) => ({
+        menuItemId: item.menuItemId,
+        quantity: item.quantity,
+      })),
+      generalComment: generalComment,
+    });
+  } catch (error) {
+    console.error("Error getting order:", error);
+    res
+      .status(500)
+      .json({ message: "Something went wrong while getting the order" });
+  }
+};
+
 module.exports = {
   createOrder,
+  getExistingOrderFromToday,
   deleteOrderForUser,
   getOrderBySummaryForRestaurant,
 };
