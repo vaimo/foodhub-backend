@@ -58,7 +58,7 @@ model Order {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   restaurantId String     @db.ObjectId
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-  creationDate DateTime   @db.Date
+  createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
   totalPrice   Int?
   status       String?

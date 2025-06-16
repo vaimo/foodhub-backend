@@ -2,75 +2,81 @@ const prisma = require("../db/prismaClient");
 
 const createOrder = async (req, res) => {
   const { restaurantId, items, generalComment } = req.body;
-  if (!restaurantId) {
-    return res.status(400).json({ message: "Restaurant ID is required" });
-  }
-  if (!items || !Array.isArray(items) || items.length === 0) {
-    return res
-      .status(400)
-      .json({ message: "Items are required and must be an array" });
-  }
-
-  for (const item of items) {
-    if (
-      !item.menuItemId ||
-      !item.userId ||
-      !item.quantity ||
-      item.quantity <= 0 ||
-      item.priceAtOrder === undefined ||
-      !item.itemNameAtOrder
-    ) {
-      return res.status(400).json({
-        message:
-          "Each item must have menuItemId, userId, quantity (greater than 0), priceAtOrder, and itemNameAtOrder",
-        invalidItem: item,
-      });
-    }
-  }
-
-  if (
-    generalComment &&
-    typeof generalComment.text === "string" &&
-    generalComment.text.trim() !== "" &&
-    !generalComment.userId
-  ) {
-    return res.status(400).json({
-      message: "General comment must have a userId if text is provided",
-    });
-  }
-  if (generalComment && !generalComment.text && generalComment.userId) {
-    return res.status(400).json({
-      message: "General comment must have text if userId is provided",
-    });
-  }
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
 
   try {
+    if (!restaurantId) {
+      throw new Error("Restaurant ID is required");
+    }
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      throw new Error("Items are required and must be an array");
+    }
+
+    const invalidItems = items.filter(
+      (item) =>
+        !item.menuItemId ||
+        !item.userId ||
+        !item.quantity ||
+        item.quantity <= 0 ||
+        item.priceAtOrder === undefined ||
+        !item.itemNameAtOrder
+    );
+
+    if (invalidItems.length !== 0) {
+      throw new Error(
+        "Each item must have menuItemId, userId, quantity (greater than 0), priceAtOrder, and itemNameAtOrder"
+      );
+    }
+
+    if (
+      generalComment &&
+      typeof generalComment.text === "string" &&
+      generalComment.text.trim() !== "" &&
+      !generalComment.userId
+    ) {
+      throw new Error("General comment must have a userId if text is provided");
+    }
+    if (generalComment && !generalComment.text && generalComment.userId) {
+      throw new Error("General comment must have text if userId is provided");
+    }
+
     const restaurant = await prisma.restaurant.findUnique({
       where: { id: restaurantId },
     });
     if (!restaurant) {
-      return res
-        .status(404)
-        .json({ message: `Restaurant with ID ${restaurantId} not found` });
+      throw new Error(`Restaurant with ID ${restaurantId} not found`);
     }
     const newOrder = await prisma.$transaction(async (tx) => {
-      const today = new Date();
-      const existingOrder = await tx.order.findFirst({
+      let order = await tx.order.findFirst({
         where: {
           restaurantId: restaurantId,
-          creationDate: today,
+          createdAt: {
+            gte: today,
+            lt: tomorrow,
+          },
         },
       });
-      if (existingOrder) {
-        return existingOrder;
-      } else {
-        const order = await tx.order.create({
+
+      if (!order) {
+        order = await tx.order.create({
           data: {
             restaurantId: restaurantId,
-            creationDate: today,
           },
         });
       }
+
+      const currentUserId = items[0].userId;
+
+      await tx.orderItem.deleteMany({
+        where: {
+          orderId: order.id,
+          userId: currentUserId,
+        },
+      });
+
       const orderItemsData = items.map((item) => ({
         orderId: order.id,
         userId: item.userId,
@@ -82,13 +88,13 @@ const createOrder = async (req, res) => {
       await tx.orderItem.createMany({
         data: orderItemsData,
       });
-
-      if (
-        generalComment &&
-        typeof generalComment.text === "string" &&
-        generalComment.text.trim() !== "" &&
-        generalComment.userId
-      ) {
+      await tx.orderComment.deleteMany({
+        where: {
+          orderId: order.id,
+          userId: currentUserId,
+        },
+      });
+      if (generalComment && generalComment.userId && generalComment.text) {
         await tx.orderComment.create({
           data: {
             orderId: order.id,
@@ -98,7 +104,11 @@ const createOrder = async (req, res) => {
         });
       }
 
-      const totalInCents = orderItemsData.reduce(
+      const allOrderItems = await tx.orderItem.findMany({
+        where: { orderId: order.id },
+      });
+
+      const totalInCents = allOrderItems.reduce(
         (acc, currentItem) =>
           acc + currentItem.priceAtOrder * currentItem.quantity,
         0
@@ -108,11 +118,6 @@ const createOrder = async (req, res) => {
         where: { id: order.id },
         data: {
           totalPrice: totalInCents,
-        },
-        include: {
-          orderItems: { include: { user: true } },
-          restaurant: true,
-          comments: { include: { user: true } },
         },
       });
 
@@ -124,22 +129,9 @@ const createOrder = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating order:", error);
-    if (error.code === "P2002") {
-      return res.status(400).json({
-        message: "Order creation failed due to a unique constraint violation",
-        details: error.meta,
-      });
-    }
-    if (error.code === "P2003") {
-      return res.status(400).json({
-        message:
-          "Order creation failed due to a foreign key constraint violation",
-        details: error.meta?.field_name,
-      });
-    }
-    res
-      .status(500)
-      .json({ message: "An error occurred while creating the order" });
+    res.status(500).json({
+      message: `An error occurred while creating the order: ${error.message}`,
+    });
   }
 };
 
@@ -245,7 +237,77 @@ const getOrderBySummaryForRestaurant = async (req, res) => {
   }
 };
 
+const deleteOrderForUser = async (req, res) => {
+  const { orderId, userId } = req.params;
+
+  if (!orderId || !userId) {
+    return res
+      .status(400)
+      .json({ message: "Order ID and User ID are required" });
+  }
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.orderItem.deleteMany({
+        where: {
+          orderId: orderId,
+          userId: userId,
+        },
+      });
+      await tx.orderComment.deleteMany({
+        where: {
+          orderId: orderId,
+          userId: userId,
+        },
+      });
+      const remainingItemsCount = await tx.orderItem.count({
+        where: {
+          orderId: orderId,
+        },
+      });
+
+      if (remainingItemsCount === 0) {
+        await tx.order.delete({
+          where: {
+            id: orderId,
+          },
+        });
+      } else {
+        const remainingItems = await tx.orderItem.findMany({
+          where: {
+            orderId: orderId,
+          },
+        });
+
+        const newTotalInCents = remainingItems.reduce(
+          (acc, item) => acc + item.priceAtOrder * item.quantity,
+          0
+        );
+
+        await tx.order.update({
+          where: {
+            id: orderId,
+          },
+          data: {
+            totalPrice: newTotalInCents,
+          },
+        });
+      }
+    });
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting user order:", error);
+    if (error.code === "P2025") {
+      return res.status(404).json({ message: "Order or user items not found" });
+    }
+    res
+      .status(500)
+      .json({ message: "Something went wrong while deleting the order" });
+  }
+};
+
 module.exports = {
   createOrder,
+  deleteOrderForUser,
   getOrderBySummaryForRestaurant,
 };
