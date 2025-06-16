@@ -207,6 +207,7 @@ const getOrderBySummaryForRestaurant = async (req, res) => {
       const userId = item.userId;
       if (!detailsByUser[userId]) {
         detailsByUser[userId] = {
+          orderId: item.orderId,
           userName: item.user.name,
           userTotal: 0,
           items: [],
