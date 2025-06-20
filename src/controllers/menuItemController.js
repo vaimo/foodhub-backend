@@ -71,7 +71,7 @@ const getAllMenuItemsForRestaurant = async (req, res) => {
     }
 
     const menuItems = await prisma.menuItem.findMany({
-      where: { restaurantId: restaurantId },
+      where: { restaurantId: restaurantId, isActive: true },
     });
 
     res.status(200).json(menuItems);
@@ -137,14 +137,29 @@ const deleteMenuItem = async (req, res) => {
   try {
     const { restaurantId, menuItemId } = req.params;
 
-    const deletedMenuItem = await prisma.menuItem.delete({
-      where: { id: menuItemId, restaurantId: restaurantId },
+    const orderCount = await prisma.orderItem.count({
+      where: { menuItemId: menuItemId },
     });
+    if (orderCount > 0) {
+      const archivedMenuItem = await prisma.menuItem.update({
+        where: { id: menuItemId, restaurantId: restaurantId },
+        data: { isActive: false },
+      });
+      res.json({
+        message:
+          "Menu-item has been archived because it is part of an order history.",
+        item: archivedMenuItem,
+      });
+    } else {
+      const deletedMenuItem = await prisma.menuItem.delete({
+        where: { id: menuItemId, restaurantId: restaurantId },
+      });
 
-    res.status(200).json({
-      message: "Menu-item deleted successfully",
-      menuItem: deletedMenuItem,
-    });
+      res.status(200).json({
+        message: "Menu-item deleted successfully",
+        item: deletedMenuItem,
+      });
+    }
   } catch (error) {
     console.error("Error deleting menu item:", error);
     if (error.code === "P2025") {
