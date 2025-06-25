@@ -41,7 +41,9 @@ model MenuItem {
   restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId String     @db.ObjectId
 
-  orderItems OrderItem[]
+  orderItems   OrderItem[]
+  // New relation for MenuItem to MenuItemOptionGroup
+  optionGroups MenuItemOptionGroup[]
 }
 
 model User {
@@ -91,4 +93,36 @@ model OrderComment {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model OptionGroup {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String // Renamed 'value' to 'name' for clarity as it represents the group name (e.g., 'friet opties')
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  options              Option[]
+  menuItemOptionGroups MenuItemOptionGroup[]
+}
+
+model Option {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  optionGroupId String      @db.ObjectId
+  optionGroup   OptionGroup @relation(fields: [optionGroupId], references: [id])
+  value         String // e.g., 'zonder zout', 'tomaten ketchup'
+  price         Int         @default(0) // Default price to 0 if not specified
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model MenuItemOptionGroup {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  menuItemId    String      @db.ObjectId
+  menuItem      MenuItem    @relation(fields: [menuItemId], references: [id])
+  optionGroupId String      @db.ObjectId
+  optionGroup   OptionGroup @relation(fields: [optionGroupId], references: [id])
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([menuItemId, optionGroupId]) // Ensures a menu item can only be associated with an option group once
 }

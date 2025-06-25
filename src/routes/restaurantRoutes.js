@@ -13,6 +13,6 @@ router.put('/:id', updateRestaurant);
 
 router.delete('/:id', deleteRestaurant);
 
-router.use('/:restaurantId/menuitems', menuItemRoutes);
+router.use('/:restaurantId/menu-items', menuItemRoutes);
 
 module.exports = router;

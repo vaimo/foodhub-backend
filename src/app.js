@@ -3,6 +3,7 @@ const cors = require("cors");
 const restaurantRoutes = require("./routes/restaurantRoutes");
 const userRoutes = require("./routes/userRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const optionGroupRoutes = require('./routes/optionGroupRoutes');
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/users", userRoutes);
 
 app.use("/api/orders", orderRoutes);
+
+app.use('/api/option-groups', optionGroupRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

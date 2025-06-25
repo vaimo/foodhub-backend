@@ -172,6 +172,30 @@ exports.Prisma.OrderCommentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.OptionGroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OptionScalarFieldEnum = {
+  id: 'id',
+  optionGroupId: 'optionGroupId',
+  value: 'value',
+  price: 'price',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MenuItemOptionGroupScalarFieldEnum = {
+  id: 'id',
+  menuItemId: 'menuItemId',
+  optionGroupId: 'optionGroupId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -189,7 +213,10 @@ exports.Prisma.ModelName = {
   User: 'User',
   Order: 'Order',
   OrderItem: 'OrderItem',
-  OrderComment: 'OrderComment'
+  OrderComment: 'OrderComment',
+  OptionGroup: 'OptionGroup',
+  Option: 'Option',
+  MenuItemOptionGroup: 'MenuItemOptionGroup'
 };
 
 /**
