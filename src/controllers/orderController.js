@@ -366,9 +366,41 @@ const getExistingOrderFromToday = async (req, res) => {
   }
 };
 
+const getRestaurantsWithActiveOrders = async (req, res) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  try {
+    const orders = await prisma.order.findMany({
+      where: {
+        createdAt: {
+          gte: today,
+          lt: tomorrow,
+        },
+      },
+      distinct: ["restaurantId"],
+      select: {
+        restaurantId: true,
+      },
+    });
+
+    const restaurantIds = orders.map((order) => order.restaurantId);
+    res.status(200).json(restaurantIds);
+  } catch (error) {
+    console.error("Error fetching restaurants with active orders:", error);
+    res.status(500).json({
+      message:
+        "An error occurred while fetching restaurants with active orders",
+    });
+  }
+};
+
 module.exports = {
   createOrder,
   getExistingOrderFromToday,
   deleteOrderForUser,
   getOrderBySummaryForRestaurant,
+  getRestaurantsWithActiveOrders,
 };
